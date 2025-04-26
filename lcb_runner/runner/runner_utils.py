@@ -2,6 +2,11 @@ from lcb_runner.lm_styles import LMStyle, LanguageModel
 
 
 def build_runner(args, model: LanguageModel):
+    if model.model_style == LMStyle.AceCoder:
+        from lcb_runner.runner.acecoder_runner import AceCoderRunner
+
+        return AceCoderRunner(args, model)
+    
     if model.model_style == LMStyle.OpenAIChat:
         from lcb_runner.runner.oai_runner import OpenAIRunner
 

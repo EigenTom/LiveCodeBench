@@ -34,6 +34,7 @@ class LMStyle(Enum):
 
     TogetherAI = "TogetherAI"
 
+    AceCoder = "AceCoder"
 
 @dataclass
 class LanguageModel:
@@ -57,6 +58,16 @@ class LanguageModel:
 
 
 LanguageModelList: list[LanguageModel] = [
+    ## AceCoder
+    LanguageModel(
+        "GAIR/ToRL-1.5B",   # need to switch to the model that eval service is actually using
+        "acecoder-7b",
+        LMStyle.AceCoder,
+        datetime(2025, 4, 1),
+        link="localhost:8080",
+    ),
+    
+    
     ## LLama3 Base (8B and 70B)
     LanguageModel(
         "meta-llama/Meta-Llama-3-70B",

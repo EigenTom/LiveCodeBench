@@ -11,6 +11,15 @@ from lcb_runner.benchmarks.code_generation import CodeGenerationProblem
 
 
 class PromptConstants:
+    SYSTEM_MESSAGE_ACECODER = f"""\
+Answer the given coding question. You must conduct reasoning about the problem and then provide the final program as answer. 
+During the thinking process, you can write test cases or test your current solutions using a testing tool. if you want to test any python code, writing it inside ```python and ``` tags following with "```output". 
+The code between "```python" and "``````output" will then be executed, and the terminal output (standard output and standard error) will be provided to you. 
+Each program between ```python and ``` tags are independent program. You can test Python codes as many times as you want. 
+If you find no further code execution needed, you can then give your final solution in a markdown code block like this: ```python\nyour code here\n``` without appending anything. 
+The final program will be evaluated against the hidden test cases. If the final program passes all the test cases, you will get a reward. If the final program fails any of the test cases, you will get a penalty.\n
+"""
+    
     SYSTEM_MESSAGE_GENERIC = f"You are an expert Python programmer. You will be given a question (problem specification) and will generate a correct Python program that matches the specification and passes all tests."
 
     SYSTEM_MESSAGE_GEMINI = f"You are an expert Python programmer. You will be given a question (problem specification) and will generate a correct Python program that matches the specification and passes all tests. Do NOT use system calls like `exit` in the generated program. Ensure that the first code block contains the solution."
@@ -35,6 +44,20 @@ class PromptConstants:
     FORMATTING_MESSAGE_WITH_STARTER_CODE = "You will use the following starter code to write the solution to the problem and enclose your code within delimiters."
 
     FORMATTING_WITHOUT_STARTER_CODE = "Read the inputs from stdin solve the problem and write the answer to stdout (do not directly test on the sample inputs). Enclose your code within delimiters as follows. Ensure that when the python program runs, it reads the inputs, runs the algorithm and writes output to STDOUT."
+
+
+def get_acecoder_question_template_answer(question: CodeGenerationProblem):
+    prompt = f"### Question:\n{question.question_content}\n\n"
+    if question.starter_code:
+        prompt += (
+            f"### Format: {PromptConstants.FORMATTING_MESSAGE_WITH_STARTER_CODE}\n"
+        )
+        prompt += f"```python\n{question.starter_code}\n```\n\n"
+    else:
+        prompt += f"### Format: {PromptConstants.FORMATTING_WITHOUT_STARTER_CODE}\n"
+        prompt += "```python\n# YOUR CODE HERE\n```\n\n"
+    prompt += f"### Answer: (use the provided format with backticks)\n\n"
+    return prompt
 
 
 def get_generic_question_template_answer(question: CodeGenerationProblem):
@@ -209,6 +232,21 @@ def get_base_model_question_template_answer(question: CodeGenerationProblem):
 def format_prompt_generation(
     question: CodeGenerationProblem, LanguageModelStyle: LMStyle
 ) -> str:
+    if LanguageModelStyle == LMStyle.AceCoder:
+        chat_messages = [
+            {
+                "role": "system",
+                "content": PromptConstants.SYSTEM_MESSAGE_ACECODER,
+            },
+        ]
+        chat_messages += [
+            {
+                "role": "user",
+                "content": get_generic_question_template_answer(question),
+            },
+        ]
+        return chat_messages
+    
     if LanguageModelStyle in [
         LMStyle.OpenAIChat,
         LMStyle.DeepSeekAPI,
