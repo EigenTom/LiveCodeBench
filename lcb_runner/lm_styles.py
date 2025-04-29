@@ -60,7 +60,9 @@ class LanguageModel:
 LanguageModelList: list[LanguageModel] = [
     ## AceCoder
     LanguageModel(
-        "GAIR/ToRL-1.5B",   # need to switch to the model that eval service is actually using
+        # need to switch to the model that eval service is actually using
+        "/data/yi/verl-tool/checkpoints/evaluation/mathcoder-fsdp_agent-qwen_qwen2.5-7b-grpo-n16-b128-t1.0-lr1e-6-360-step",   
+        # "/data/yi/verl-tool/checkpoints/evaluation/mathcoder-fsdp_agent-qwen_qwen2.5-1.5b-grpo-n16-b128-t1.0-lr1e-6-420-step",
         "acecoder-7b",
         LMStyle.AceCoder,
         datetime(2025, 4, 1),

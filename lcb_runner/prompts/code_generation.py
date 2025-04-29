@@ -11,14 +11,17 @@ from lcb_runner.benchmarks.code_generation import CodeGenerationProblem
 
 
 class PromptConstants:
-    SYSTEM_MESSAGE_ACECODER = f"""\
-Answer the given coding question. You must conduct reasoning about the problem and then provide the final program as answer. 
-During the thinking process, you can write test cases or test your current solutions using a testing tool. if you want to test any python code, writing it inside ```python and ``` tags following with "```output". 
-The code between "```python" and "``````output" will then be executed, and the terminal output (standard output and standard error) will be provided to you. 
-Each program between ```python and ``` tags are independent program. You can test Python codes as many times as you want. 
-If you find no further code execution needed, you can then give your final solution in a markdown code block like this: ```python\nyour code here\n``` without appending anything. 
-The final program will be evaluated against the hidden test cases. If the final program passes all the test cases, you will get a reward. If the final program fails any of the test cases, you will get a penalty.\n
-"""
+#     SYSTEM_MESSAGE_ACECODER = f"""\
+# Answer the given coding question. You must conduct reasoning about the problem and then provide the final program as answer. 
+# During the thinking process, you can write test cases or test your current solutions using a testing tool. if you want to test any python code, writing it inside ```python and ``` tags following with "```output". 
+# The code between "```python" and "``````output" will then be executed, and the terminal output (standard output and standard error) will be provided to you. 
+# Each program between ```python and ``` tags are independent program. You can test Python codes as many times as you want. 
+# If you find no further code execution needed, you can then give your final solution in a markdown code block like this: ```python\nyour code here\n``` without appending anything. 
+# The final program will be evaluated against the hidden test cases. If the final program passes all the test cases, you will get a reward. If the final program fails any of the test cases, you will get a penalty.\n
+# """
+    
+    SYSTEM_MESSAGE_ACECODER = '''\
+A conversation between User and Assistant. The user asks a question, and the Assistant solves it. The assistant first thinks about the reasoning process in the mind and then provides the user with the answer. User: Please integrate natural language reasoning with programs to solve the problem above. For math problems, please put your final answer within \\boxed{}. For code problems, please put your final answer in a markdown code block like this: ```python\nyour code here\n```."'''
     
     SYSTEM_MESSAGE_GENERIC = f"You are an expert Python programmer. You will be given a question (problem specification) and will generate a correct Python program that matches the specification and passes all tests."
 
