@@ -18,7 +18,9 @@ from lcb_runner.runner.scenario_router import (
 def main():
     args = get_args()
 
-    model = LanguageModelStore[args.model]
+    model = LanguageModelStore["AceCoder"]
+    
+    
     benchmark, format_prompt = build_prompt_benchmark(args)
     if args.debug:
         print(f"Running with {len(benchmark)} instances in debug mode")
